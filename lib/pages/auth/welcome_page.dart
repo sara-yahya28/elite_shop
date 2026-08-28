@@ -20,7 +20,7 @@ class _WelcomePageState extends State<WelcomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/elite-store-logo.png',
+                    'assets/images/elite-store-logo.png',
               width: 150,
               height: 150,
               fit: BoxFit.fill,

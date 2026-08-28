@@ -3,7 +3,6 @@ import 'package:elite_shop/utils/theme.dart';
 import 'package:elite_shop/pages/auth/signin_page.dart';
 import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/widgets/common/custom_button.dart';
-import 'package:elite_shop/widgets/common/custom_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   bool isLoading = false;
   bool isVisible = false;
   bool isChecked = false;
@@ -57,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('تم تسجيل الدخول بنجاح 🎉'),
+            content: Text('تم تسجيل الدخول بنجاح '),
             backgroundColor: Colors.green,
           ),
         );
@@ -88,18 +87,11 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // الشعار
-                  Container(
+                  Image.asset(
+                    'assets/images/elite-store-logo.png',
                     height: 100,
                     width: 100,
-                    decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.storefront,
-                      size: 60,
-                      color: primaryColor,
-                    ),
+                    fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -213,7 +205,9 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('سيتم إضافة صفحة استعادة كلمة المرور قريباً'),
+                          content: Text(
+                            'سيتم إضافة صفحة استعادة كلمة المرور قريباً',
+                          ),
                         ),
                       );
                     },

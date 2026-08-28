@@ -109,9 +109,9 @@ class _SigninPageState extends State<SigninPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // الشعار
+
                   Image.asset(
-                    'assets/elite-store-logo.png',
+                    'assets/images/elite-store-logo.png',
                     height: 100,
                     width: 100,
                     fit: BoxFit.contain,
