@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'Elite Shop',
       theme: appTheme(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/cart',
       routes: {
         '/': (context) => const LoginPage(),   
         '/home': (context) => const HomePage(),
