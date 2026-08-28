@@ -24,7 +24,7 @@ ThemeData appTheme() {
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
-        minimumSize: const Size(double.infinity, 50),
+        minimumSize: const Size(250, 50),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
     ),
@@ -37,6 +37,12 @@ ThemeData appTheme() {
         borderRadius: BorderRadius.circular(15),
         borderSide: const BorderSide(color: secondryColor),
       ),
+
+errorBorder: OutlineInputBorder(
+  borderRadius: BorderRadius.circular(15),
+  borderSide: BorderSide(color: Colors.red),
+),
+
       enabledBorder: OutlineInputBorder(
         // field is active
         borderRadius: BorderRadius.circular(15),
