@@ -80,7 +80,7 @@ class _SigninPageState extends State<SigninPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('تم إنشاء الحساب بنجاح 🎉'),
+            content: Text('تم إنشاء الحساب بنجاح '),
             backgroundColor: Colors.green,
           ),
         );
