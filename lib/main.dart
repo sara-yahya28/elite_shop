@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
       title: 'Elite Shop',
       theme: appTheme(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/cart',
       routes: {
         '/': (context) => const WelcomePage(),
         '/home': (context) => const HomePage(),

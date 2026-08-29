@@ -70,6 +70,8 @@ class HomePage extends StatelessWidget {
                   ),
                   //عند الضغط على الزر، يتم إغلاق النافذة وعرض رسالة SnackBar
                   onPressed: () {
+                    // Add the selected product to the shared cart list.
+                    cartItems.add(product);
                     Navigator.pop(ctx);
                     //اشعار اسفل الشاشة
                     ScaffoldMessenger.of(context).showSnackBar(

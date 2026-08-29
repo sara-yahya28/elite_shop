@@ -26,20 +26,23 @@ final List<Product> mockProducts = [
     name: 'حذاء جري رياضي',
     description: 'خفيف ومريح للتمارين اليومية',
     price: 120.50,
-   imageUrl: 'assets/images/shoes.png',
+    imageUrl: 'assets/images/shoes.png',
   ),
   const Product(
     id: 3,
     name: 'سماعة لاسلكية',
     description: 'عزل ضوضاء وجودة صوت عالية',
     price: 89.99,
-imageUrl: 'assets/images/headphones.png',
+    imageUrl: 'assets/images/headphones.png',
   ),
   const Product(
     id: 4,
     name: 'ساعة ذكية',
     description: 'تتبع اللياقة والصحة',
     price: 249.00,
-imageUrl: 'assets/images/watch.png',
+    imageUrl: 'assets/images/watch.png',
   ),
 ];
+
+// Shared cart list used by the home page and cart page.
+final List<Product> cartItems = [];
