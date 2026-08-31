@@ -38,51 +38,55 @@ class CategorySection extends StatelessWidget {
         Container(
           //مساحة من الجهتين لمنع الالتصاق بحواف الشاشة
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          width: double.infinity,//تاخذ العرض المتاح للشاشة
-          //عنصر يرتب المحتوى افقيا واذا انتهت المساحة ينزل تلقائي للسطر التالي 
-          child: Wrap(
-            spacing: 16.0, // المسافة الأفقية بين العناصر
-            runSpacing: 14.0, // المسافة العمودية بين الأسطر
-            alignment: WrapAlignment.spaceAround, // توزيع الأيقونات بالتساوي
-            //دالة لتوليد العناصر حسبب الموجود بالقائمة categories
-            children: List.generate(categories.length, (index) {
-              //يعرض الايقونه والاسم بشكل عمودي
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // دائرة الايقونه
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.12), // خلفية شفافة بلون الثيم
-                      shape: BoxShape.circle, // شكل دائري
-                      border: Border.all(
-                        color: primaryColor.withOpacity(0.4),
-                        width: 1.5,
+          width: double.infinity, //تاخذ العرض المتاح للشاشة
+          //عنصر يسمح بالتمرير الأفقي
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(), // يعطي تأثير مرن عند انتهاء التمرير
+            child: Row(
+              // دالة لتوليد العناصر حسب الموجود بالقائمة categories
+              children: List.generate(categories.length, (index) {
+                //يعرض الايقونه والاسم بشكل عمودي
+                return Padding(
+                  padding: const EdgeInsets.all( 10.0), // مسافة بين كل قسم والآخر
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // دائرة الايقونه
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: primaryColor.withOpacity(0.12), // خلفية شفافة بلون الثيم
+                          shape: BoxShape.circle, // شكل دائري
+                          border: Border.all(
+                            color: primaryColor.withOpacity(0.4),
+                            width: 1.5,
+                          ),
+                        ),
+                        //يعرض الايقونات حسب الترتيب في القائمة categoryIcons
+                        child: Icon(
+                          index < categoryIcons.length ? categoryIcons[index] : Icons.category,
+                          color: primaryColor,
+                          size: 28,
+                        ),
                       ),
-                    ),
-                    //يعرض الايقونات حسبب الترتيب في القائمة categoryIcons
-                    child: Icon(
-                      index < categoryIcons.length ? categoryIcons[index] : Icons.category,
-                      color: primaryColor,
-                      size: 28,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
+                      const SizedBox(height: 6),
 
-                  //  اسم القسم تحت الدائرة
-                  Text(
-                    categories[index],
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
+                      // اسم القسم تحت الدائرة
+                      Text(
+                        categories[index],
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              );
-            }),
+                );
+              }),
+            ),
           ),
         ),
       ],

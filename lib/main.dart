@@ -8,6 +8,8 @@ import 'package:elite_shop/pages/auth/login_page.dart';
 import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/pages/cart/cart_page.dart';
 
+import 'package:elite_shop/pages/main/main_screen.dart';
+
 void main() {
   runApp(
     DevicePreview(enabled: !kReleaseMode, builder: (context) => const MyApp()),
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const WelcomePage(),
+        '/main': (context) => const MainScreen(),
         '/home': (context) => const HomePage(),
         '/cart': (context) => const CartPage(),
         '/signin': (context) => const SigninPage(),
