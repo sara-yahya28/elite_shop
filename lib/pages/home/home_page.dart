@@ -101,69 +101,44 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: backgroundColor, 
 
-        appBar: AppBar(
-          title: const Text(appName),
-          centerTitle: true,
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          actions: [
-            //ايقونة البحث , غير مفعلة
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-            //ايقونه السلة
-            IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-            ),
-          ],
-        ),
-
-        // القائمة الجانبية
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              //راس القائمة الجانبية
-              UserAccountsDrawerHeader(
-                accountName: const Text(
-                  'Noora',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                accountEmail: const Text('noora@gmail.com'),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Text(
-                    'N',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                //خلفية الراس
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('الرئيسية'),
-                onTap: () => Navigator.pop(context),
-              ),
-              ListTile(
-                leading: const Icon(Icons.shopping_cart),
-                title: const Text('السلة'),
-                onTap: () {
-                  //يغلق القائمة الجانبية
-                  Navigator.pop(context);
-                  //ينتقل لصفحة السلة
-                  Navigator.pushNamed(context, '/cart');
-                },
-              ),
-            ],
-          ),
-        ),
+      appBar: AppBar(
+  automaticallyImplyLeading: false,
+  backgroundColor: primaryColor,
+  foregroundColor: Colors.white,
+  centerTitle: true,
+  // نضع اسم التطبيق بالمنتصف
+  title: const Text(
+    appName,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  // نضع الشعار في جهة البداية (اليسار/اليمين حسب لغة الجهاز)
+  leading: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Image.asset(
+      'assets/images/elite-store-logo.png',
+      height: 40,
+      width: 40,
+      errorBuilder: (context, error, stackTrace) {
+        return const Icon(Icons.storefront, size: 28);
+      },
+    ),
+  ),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.search),
+      onPressed: () {},
+    ),
+    IconButton(
+      icon: const Icon(Icons.shopping_cart),
+      onPressed: () {
+        Navigator.pushNamed(context, '/cart');
+      },
+    ),
+  ],
+),
 
         // لتمرير الصفحة بشكل عمودي
         body: SingleChildScrollView(
@@ -174,46 +149,70 @@ class HomePage extends StatelessWidget {
 
               // الشريط الاعلاني بداية الصفحة
               SizedBox(
-                height: 80,
+                height: 200,
                 //عنصر يسمح بعرض بطاقات يمكن تمريرها بشكل افقي
                 child: CarouselView(
-                  itemExtent: 250, //عرض العنصر الواحد
+                  itemExtent: 400, //عرض العنصر الواحد
                   shrinkExtent: 200, //تحدد مدى صغر البطاقة عند السحب وتعطي تاثير للحركة
                   //مصفوفة للاعلانات 
                   children: [
                     Container(
-                      color: primaryColor,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/show.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: const Center(
                         child: Text(
-                          '! عروض الصيف ',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          ' عروض الصيف ',
+                          style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                     Container(
-                      color: secondryColor,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/phone.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: const Center(
                         child: Text(
                           'خصم 50% على الأحذية',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Color.fromARGB(255, 58, 56, 56), fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                     Container(
-                      color: primaryColor,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/phone.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: const Center(
                         child: Text(
                           '! جديدنا: الإلكترونيات ',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Color.fromARGB(255, 58, 56, 56), fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                     Container(
-                      color: secondryColor,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/phone.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: const Center(
                         child: Text(
                           '! منتجات حصرية ',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Color.fromARGB(255, 58, 56, 56), fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -247,16 +246,16 @@ class HomePage extends StatelessWidget {
                 //عنصر يقرا مساحة الشاشة الحالية تنعطى عبر ال constraints
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    // شرط اذا كانت المساحة اكبر من 600 بكسل يعرض بشكل GridView
-                    if (constraints.maxWidth > 600) {
+                    // شرط اذا كانت المساحة اكبر من 350 بكسل يعرض بشكل GridView
+                    if (constraints.maxWidth > 350) {
                       return GridView.builder(
                         shrinkWrap: true,//تخلي العناصر تاخذ مساحة عمودية حسب المحتوى
                         physics: const NeverScrollableScrollPhysics(),//توقف التمرير الخاص عشان لا يتضارب مع تمرير الصفحة الرئيسية
                         //هيكل وتقسيم العناصر في الشبكة
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 5,
                           childAspectRatio: 0.75,
                         ),
                         //عدد العناصر حسب العناصر الوهمية المضافة في ملف constants.dart 
@@ -271,7 +270,7 @@ class HomePage extends StatelessWidget {
                           );
                         },
                       );
-                      //شرط اذا كانت المساحة اقل من 600 يعرض بشكل ListView
+                      //شرط اذا كانت المساحة اقل من 350 يعرض بشكل ListView
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,

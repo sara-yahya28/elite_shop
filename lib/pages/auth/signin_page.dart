@@ -1,7 +1,12 @@
 import 'package:elite_shop/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:elite_shop/pages/auth/login_page.dart';
-import 'package:elite_shop/pages/home/home_page.dart';
+
+//import 'package:elite_shop/pages/home/home_page.dart';
+
+
+// أضيفي هذا الاستيراد فوق في أعلى الملف:
+import 'package:elite_shop/pages/main/main_screen.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -87,7 +92,7 @@ class _SigninPageState extends State<SigninPage> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       });
     }

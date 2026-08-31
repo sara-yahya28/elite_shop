@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:elite_shop/utils/theme.dart';
 import 'package:elite_shop/pages/auth/signin_page.dart';
-import 'package:elite_shop/pages/home/home_page.dart';
+
+//import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/widgets/common/custom_button.dart';
+// أضيفي هذا الاستيراد فوق في أعلى الملف:
+import 'package:elite_shop/pages/main/main_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -63,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       });
     }

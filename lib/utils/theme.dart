@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color primaryColor = Color(0xFF53629E);
 const Color secondryColor = Color(0xFF87BAC3);
-const Color backgroundColor = Color(0xFFD6F4ED);
+const Color backgroundColor = Color.fromARGB(255, 242, 244, 244);
 const Color textColor = Color(0xFF473472);
 
 // function returns ThemeData
