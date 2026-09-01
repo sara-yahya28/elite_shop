@@ -1,15 +1,20 @@
 import 'package:elite_shop/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:elite_shop/widgets/profile/profile_menu_item.dart';
+import 'package:elite_shop/services/user_session.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = UserSession.user;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('الملف الشخصي'),
-      automaticallyImplyLeading: false,),
+      appBar: AppBar(
+        title: const Text('الملف الشخصي'),
+        automaticallyImplyLeading: false,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -24,9 +29,11 @@ class ProfilePage extends StatelessWidget {
 
             const SizedBox(height: 15),
             // اسم المستخدم
-            const Text(
-              'نورة صالح',
-              style: TextStyle(
+            Text(
+              user != null
+                  ? '${user['firstName']} ${user['lastName']}'
+                  : 'المستخدم',
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: primaryColor,
@@ -34,7 +41,7 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             // البريد الإلكتروني
-            const Text('noorah.saleh@example.com'),
+            Text(user?['email'] ?? ''),
             const SizedBox(height: 25),
             // إحصائيات المستخدم
 
@@ -192,7 +199,6 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-
 
             const SizedBox(height: 8),
             Padding(
