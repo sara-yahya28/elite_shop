@@ -11,6 +11,9 @@ import 'package:elite_shop/pages/profile/profile_page.dart';
 
 
 import 'package:elite_shop/pages/main/main_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:elite_shop/cubit/products/products_cubit.dart';
+import 'package:elite_shop/cubit/favorites/favorites_cubit.dart';
 
 void main() {
   runApp(
