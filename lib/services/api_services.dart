@@ -64,4 +64,40 @@ class ApiService {
       return [];
     }
   }
+// دالة الـ login
+Future<Map<String, dynamic>> login(
+  String username,
+  String password,
+) async {
+  try {
+    print('🔵 إرسال بيانات تسجيل الدخول...');
+    print('Username: $username');
+    print('Password: $password');
+
+    final response = await _dio.post(
+      '/user/login',
+      data: {
+        'username': username,
+        'password': password,
+      },
+    );
+
+    print('🟢 Response Status: ${response.statusCode}');
+    print('🟢 Response Data: ${response.data}');
+
+    if (response.statusCode == 200) {
+      return response.data;
+    }
+
+    return {};
+  } on DioException catch (e) {
+    print('🔴 Login Error: ${e.message}');
+    print('🔴 Status Code: ${e.response?.statusCode}');
+    print('🔴 Response: ${e.response?.data}');
+
+    return {};
+  }
+}
+
+
 }
