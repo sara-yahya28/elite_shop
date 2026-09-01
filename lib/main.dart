@@ -7,8 +7,10 @@ import 'package:elite_shop/utils/theme.dart';
 import 'package:elite_shop/pages/auth/login_page.dart';
 import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/pages/cart/cart_page.dart';
-
 import 'package:elite_shop/pages/main/main_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:elite_shop/cubit/products/products_cubit.dart';
+import 'package:elite_shop/cubit/favorites/favorites_cubit.dart';
 
 void main() {
   runApp(
@@ -21,22 +23,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-
-      title: 'Elite Shop',
-      theme: appTheme(),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => const WelcomePage(),
-        '/main': (context) => const MainScreen(),
-        '/home': (context) => const HomePage(),
-        '/cart': (context) => const CartPage(),
-        '/signin': (context) => const SigninPage(),
-        '/login': (context) => const LoginPage(),
-      },
+    // ⬇️ لف التطبيق بـ MultiBlocProvider لتوفير الـ Cubits
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ProductsCubit()..fetchProducts(),
+        ),
+        BlocProvider(
+          create: (context) => FavoritesCubit(),
+        ),
+      ],
+      child: MaterialApp(
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
+        title: 'Elite Shop',
+        theme: appTheme(),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (context) => const WelcomePage(),
+          '/main': (context) => const MainScreen(),
+          '/home': (context) => const HomePage(),
+          '/cart': (context) => const CartPage(),
+          '/signin': (context) => const SigninPage(),
+          '/login': (context) => const LoginPage(),
+        },
+      ),
     );
   }
 }

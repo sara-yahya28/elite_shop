@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:elite_shop/utils/theme.dart';
 import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/pages/cart/cart_page.dart';
+import 'package:elite_shop/pages/favorites/favorites_page.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
@@ -20,12 +21,11 @@ class _MainScreenState extends State<MainScreen> {
     _currentIndex = widget.initialIndex;
   }
 
-  // التبويبات الرئيسية داخل المتجر
-  final List<Widget> _pages = const [
-    HomePage(), // التبويب 0: الرئيسية
-    Center(child: Text('المفضلة')), // التبويب 1: المفضلة
-    CartPage(), // التبويب 2: السلة (الصفحة الحقيقية)
-    Center(child: Text('حسابي')), // التبويب 3: الحساب
+  final List<Widget> _pages = [
+    HomePage(key: const PageStorageKey('home')),
+    FavoritesPage(key: const PageStorageKey('favorites')),
+    CartPage(key: const PageStorageKey('cart')),
+    Center(child: Text('حسابي'), key: const PageStorageKey('profile')),
   ];
 
   @override
@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         child: TooltipVisibility(
-          visible: false, // 👈 لإلغاء ظهور النص/التلميح التوضيحي فوق الأيقونات
+          visible: false,
           child: NavigationBar(
             selectedIndex: _currentIndex,
             onDestinationSelected: (int index) {
