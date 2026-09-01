@@ -23,6 +23,7 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('سلة التسوق'),
         backgroundColor: primaryColor,
