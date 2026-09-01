@@ -14,28 +14,28 @@ final List<String> categories = [
 
 // البيانات الوهمية للمنتجات
 final List<Product> mockProducts = [
-  const Product(
+  Product(
     id: 1,
     name: 'هاتف ذكي',
     description: 'أحدث هاتف مع كاميرا جبارة',
     price: 999.99,
     imageUrl: 'assets/images/phone.png',
   ),
-  const Product(
+  Product(
     id: 2,
     name: 'حذاء جري رياضي',
     description: 'خفيف ومريح للتمارين اليومية',
     price: 120.50,
     imageUrl: 'assets/images/shoes.png',
   ),
-  const Product(
+  Product(
     id: 3,
     name: 'سماعة لاسلكية',
     description: 'عزل ضوضاء وجودة صوت عالية',
     price: 89.99,
     imageUrl: 'assets/images/headphones.png',
   ),
-  const Product(
+  Product(
     id: 4,
     name: 'ساعة ذكية',
     description: 'تتبع اللياقة والصحة',

@@ -5,16 +5,16 @@ import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/pages/cart/cart_page.dart';
 import 'package:elite_shop/pages/favorites/favorites_page.dart';
 
-
 class MainScreen extends StatefulWidget {
   final int initialIndex;
   const MainScreen({super.key, this.initialIndex = 0});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainScreen> createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+// إزالة (_) تجعل الكلاس متاحاً للـ HomePage للوصول لدالة تغيير التبويب
+class MainScreenState extends State<MainScreen> {
   late int _currentIndex;
 
   @override
@@ -23,11 +23,18 @@ class _MainScreenState extends State<MainScreen> {
     _currentIndex = widget.initialIndex;
   }
 
+  // دالة لتغيير التبويب من أي صفحة داخلية
+  void changeTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   final List<Widget> _pages = [
     HomePage(key: const PageStorageKey('home')),
     FavoritesPage(key: const PageStorageKey('favorites')),
     CartPage(key: const PageStorageKey('cart')),
-    ProfilePage( key: const PageStorageKey('profile')),
+    ProfilePage(key: const PageStorageKey('profile')),
   ];
 
   @override

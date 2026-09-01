@@ -1,7 +1,8 @@
-import 'package:elite_shop/utils/theme.dart';
 import 'package:flutter/material.dart';
-
-import '../../utils/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:elite_shop/utils/theme.dart';
+import 'package:elite_shop/cubit/cart/cart_cubit.dart';
+import 'package:elite_shop/cubit/cart/cart_state.dart';
 import '../../widgets/common/custom_button.dart';
 
 class CartPage extends StatefulWidget {
@@ -15,239 +16,295 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double cartTotal = cartItems.fold(
-      0.0,
-      (sum, item) => sum + item.price,
-    );
+    return BlocBuilder<CartCubit, CartState>(
+      builder: (context, state) {
+        final cartCubit = context.read<CartCubit>();
+        final cartItems = cartCubit.items;
+        final double cartTotal = cartCubit.calculateTotalPrice();
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: const Text('سلة التسوق'),
-        backgroundColor: primaryColor,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //المنتجات في السلة
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'المنتجات',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-
-            ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: cartItems.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final product = cartItems[index];
-
-                return Card(
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 16,
-                    ),
-                    leading: Image.asset(
-                      product.imageUrl,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.broken_image,
-                          size: 30,
-                          color: Colors.red,
-                        );
-                      },
-                    ),
-                    title: Text(product.name),
-                    subtitle: Text(product.price.toString()),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          cartItems.removeAt(index);
-                        });
-                      },
-                    ),
+        return Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+            title: const Text('سلة التسوق'),
+            backgroundColor: primaryColor,
+          ),
+          body: cartItems.isEmpty
+              ? const Center(
+                  child: Text(
+                    'السلة فارغة حالياً',
+                    style: TextStyle(fontSize: 18),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-
-            //اختيار طريقة الشحن
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'طريقة الشحن',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Card(
-                child: Column(
-                  children: [
-                    RadioListTile<String>(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      title: const Text('شحن عادي '),
-                      subtitle: const Text('توصيل خلال 5 أيام'),
-                      activeColor: primaryColor,
-                      value: 'standard',
-                      groupValue: _selectedShipping,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedShipping = value!;
-                        });
-                      },
-                    ),
-                    Divider(),
-                    RadioListTile<String>(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      title: const Text('شحن سريع '),
-                      subtitle: const Text('توصيل خلال يومين'),
-                      activeColor: primaryColor,
-                      value: 'express',
-                      groupValue: _selectedShipping,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedShipping = value!;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-
-      //BottomAppBar
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        padding: const EdgeInsets.all(16),
-        height: 100,
-        elevation: 10,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('المجموع الكلي'),
-                SizedBox(height: 10),
-                // Use the current shared cart list so the total updates immediately.
-                Text(
-                  cartTotal.toStringAsFixed(2),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 140,
-              child: CustomButton(
-                text: 'ادفع الآن',
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Column(
-                          children: [
-                            Icon(Icons.help, size: 50, color: primaryColor),
-
-                            const SizedBox(height: 10),
-                            const Text('تأكيد الدفع'),
-                          ],
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'المنتجات',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        content: const Text(
-                          'هل أنت متأكد من رغبتك في إتمام عملية الدفع',
-                        ),
+                      ),
+                      ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: cartItems.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final product = cartItems[index];
 
-                        actions: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('إالغاء الأمر'),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      '/home',
-                                      (route) => false,
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.check,
-                                              color: Colors.lightGreen,
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text('تمت عملية الدفع بنجاح'),
-                                          ],
+                          return Card(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  // صورة المنتج
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      product.imageUrl,
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return const Icon(
+                                          Icons.broken_image,
+                                          size: 40,
+                                          color: Colors.grey,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  // تفاصيل المنتج
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        behavior: SnackBarBehavior.floating,
-                                        margin: const EdgeInsets.all(16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          '\$${(product.price * product.quantity).toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  // التحكم بالكمية (+ -)
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.remove_circle_outline),
+                                        color: Colors.redAccent,
+                                        onPressed: () {
+                                          cartCubit.decrementQuantity(index);
+                                        },
                                       ),
-                                    );
-                                    //العودة للصفحة الرئيسي
-                                  },
-                                  child: Text('تأكيد الدفع'),
+                                      Text(
+                                        '${product.quantity}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.add_circle_outline),
+                                        color: Colors.green,
+                                        onPressed: () {
+                                          cartCubit.incrementQuantity(index);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  // زر الحذف المباشر
+                                  IconButton(
+                                    icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                                    onPressed: () {
+                                      cartCubit.removeFromCart(index);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'طريقة الشحن',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Card(
+                          child: Column(
+                            children: [
+                              RadioListTile<String>(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
                                 ),
+                                title: const Text('شحن عادي'),
+                                subtitle: const Text('توصيل خلال 5 أيام'),
+                                activeColor: primaryColor,
+                                value: 'standard',
+                                groupValue: _selectedShipping,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedShipping = value!;
+                                  });
+                                },
+                              ),
+                              const Divider(),
+                              RadioListTile<String>(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                title: const Text('شحن سريع'),
+                                subtitle: const Text('توصيل خلال يومين'),
+                                activeColor: primaryColor,
+                                value: 'express',
+                                groupValue: _selectedShipping,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedShipping = value!;
+                                  });
+                                },
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+          bottomNavigationBar: cartItems.isEmpty
+              ? null
+              : BottomAppBar(
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(16),
+                  height: 100,
+                  elevation: 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('المجموع الكلي'),
+                          const SizedBox(height: 5),
+                          Text(
+                            '\$${cartTotal.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
                         ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+                      ),
+                      SizedBox(
+                        width: 140,
+                        child: CustomButton(
+                          text: 'ادفع الآن',
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
+                                    children: [
+                                      Icon(Icons.help, size: 50, color: primaryColor),
+                                      const SizedBox(height: 10),
+                                      const Text('تأكيد الدفع'),
+                                    ],
+                                  ),
+                                  content: const Text(
+                                    'هل أنت متأكد من رغبتك في إتمام عملية الدفع',
+                                  ),
+                                  actions: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextButton(
+                                            onPressed: () => Navigator.pop(context),
+                                            child: const Text('إلغاء الأمر'),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              context.read<CartCubit>().clearCart();
+                                              Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                '/main',
+                                                (route) => false,
+                                              );
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: const Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.check,
+                                                        color: Colors.lightGreen,
+                                                      ),
+                                                      SizedBox(width: 8),
+                                                      Text('تمت عملية الدفع بنجاح'),
+                                                    ],
+                                                  ),
+                                                  behavior: SnackBarBehavior.floating,
+                                                  margin: const EdgeInsets.all(16),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text('تأكيد الدفع'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        );
+      },
     );
   }
 }
