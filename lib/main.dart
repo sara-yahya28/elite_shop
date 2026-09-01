@@ -12,6 +12,7 @@ import 'package:elite_shop/pages/main/main_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:elite_shop/cubit/products/products_cubit.dart';
 import 'package:elite_shop/cubit/favorites/favorites_cubit.dart';
+import 'package:elite_shop/cubit/cart/cart_cubit.dart';
 
 void main() {
   runApp(
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ProductsCubit()..fetchProducts()),
         BlocProvider(create: (context) => FavoritesCubit()),
+        BlocProvider(create: (context) => CartCubit()),
       ],
       child: MaterialApp(
         useInheritedMediaQuery: true,

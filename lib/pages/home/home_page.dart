@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-// 🔴 استيراد flutter_bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
-// 🔴 استيراد ProductsCubit و ProductsState
 import 'package:elite_shop/cubit/products/products_cubit.dart';
 import 'package:elite_shop/cubit/products/products_state.dart';
+import 'package:elite_shop/cubit/cart/cart_cubit.dart';
 import 'package:elite_shop/models/product.dart';
+import 'package:elite_shop/pages/main/main_screen.dart'; // <--- استيراد ملف main_screen هنا
 import '../../utils/constants.dart';
 import '../../utils/theme.dart';
 import '../../widgets/product/product_card.dart';
@@ -13,7 +13,6 @@ import 'home_widgets/category_section.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // 🔴 تغيير نوع المعامل من dynamic إلى Product
   void _showProductDetails(BuildContext context, Product product) {
     showModalBottomSheet(
       context: context,
@@ -68,7 +67,8 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    cartItems.add(product);
+                    // إضافة إلى السلة عبر CartCubit
+                    context.read<CartCubit>().addToCart(product);
                     Navigator.pop(ctx);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -117,18 +117,24 @@ class HomePage extends StatelessWidget {
               },
             ),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-            ),
-          ],
+         actions: [
+  IconButton(
+    icon: const Icon(Icons.search),
+    onPressed: () {},
+  ),
+  IconButton(
+    icon: const Icon(Icons.shopping_cart),
+    onPressed: () {
+      // الحصول على حالة MainScreen والتحويل إلى تبويب السلة (Index 2)
+      final mainState = context.findAncestorStateOfType<MainScreenState>();
+      if (mainState != null) {
+        mainState.changeTab(2);
+      } else {
+        Navigator.pushNamed(context, '/cart');
+      }
+    },
+  ),
+],
         ),
         body: BlocBuilder<ProductsCubit, ProductsState>(
           builder: (context, state) {
@@ -151,7 +157,6 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        // إعادة المحاولة
                         context.read<ProductsCubit>().fetchProducts();
                       },
                       child: const Text('إعادة المحاولة'),
@@ -161,17 +166,14 @@ class HomePage extends StatelessWidget {
               );
             }
 
-            // 3️⃣ حالة النجاح (ProductsLoaded)
             if (state is ProductsLoaded) {
-              final products = state.products; // ✅ المنتجات من API
+              final products = state.products;
 
-              // ✅ نفس التصميم ولكن مع products بدلاً من mockProducts
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10),
-                    // الشريط الإعلاني
                     SizedBox(
                       height: 200,
                       child: CarouselView(
@@ -216,51 +218,11 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(28),
-                              image: const DecorationImage(
-                                image: AssetImage('assets/images/phone.png'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '! جديدنا: الإلكترونيات ',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 58, 56, 56),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(28),
-                              image: const DecorationImage(
-                                image: AssetImage('assets/images/phone.png'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '! منتجات حصرية ',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 58, 56, 56),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                    // قسم الأقسام
                     const CategorySection(),
                     const SizedBox(height: 10),
-                    // عنوان "أحدث المنتجات"
                     const Padding(
                       padding: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0, bottom: 8.0),
                       child: Align(
@@ -271,7 +233,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // عرض المنتجات من API
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: LayoutBuilder(
@@ -286,8 +247,7 @@ class HomePage extends StatelessWidget {
                                 mainAxisSpacing: 5,
                                 childAspectRatio: 0.75,
                               ),
-                              // ✅ itemCount من API
-                              itemCount: 15,
+                              itemCount: products.length, // ✅ إرجاع عدد العناصر الصحيح
                               itemBuilder: (context, index) {
                                 final product = products[index];
                                 return ProductCard(
@@ -300,7 +260,6 @@ class HomePage extends StatelessWidget {
                             return ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              // ✅ itemCount من API
                               itemCount: products.length,
                               itemBuilder: (context, index) {
                                 final product = products[index];
@@ -326,7 +285,6 @@ class HomePage extends StatelessWidget {
               );
             }
 
-            // حالة افتراضية (نادرة)
             return const Center(child: Text('لا توجد منتجات'));
           },
         ),
