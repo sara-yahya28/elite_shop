@@ -14,10 +14,10 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text('المفضلات'),
       ),
-      // 🔴 نستخدم BlocBuilder للاستماع إلى FavoritesCubit
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           // 🔍 طباعة تفصيلية للحالة

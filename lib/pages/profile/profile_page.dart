@@ -8,7 +8,8 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('الملف الشخصي')),
+      appBar: AppBar(title: const Text('الملف الشخصي'),
+      automaticallyImplyLeading: false,),
       body: SingleChildScrollView(
         child: Column(
           children: [

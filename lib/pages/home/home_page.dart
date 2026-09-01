@@ -130,10 +130,8 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        // 🔴 نستبدل body بالكامل بـ BlocBuilder
         body: BlocBuilder<ProductsCubit, ProductsState>(
           builder: (context, state) {
-            // 1️⃣ حالة التحميل
             if (state is ProductsLoading) {
               return const Center(
                 child: CircularProgressIndicator(
@@ -142,7 +140,6 @@ class HomePage extends StatelessWidget {
               );
             }
 
-            // 2️⃣ حالة الخطأ
             if (state is ProductsError) {
               return Center(
                 child: Column(

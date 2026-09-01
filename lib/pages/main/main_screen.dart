@@ -1,8 +1,10 @@
+import 'package:elite_shop/pages/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:elite_shop/utils/theme.dart';
 import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/pages/cart/cart_page.dart';
 import 'package:elite_shop/pages/favorites/favorites_page.dart';
+
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
@@ -25,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     HomePage(key: const PageStorageKey('home')),
     FavoritesPage(key: const PageStorageKey('favorites')),
     CartPage(key: const PageStorageKey('cart')),
-    Center(child: Text('حسابي'), key: const PageStorageKey('profile')),
+    ProfilePage( key: const PageStorageKey('profile')),
   ];
 
   @override
