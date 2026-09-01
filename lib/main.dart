@@ -7,6 +7,8 @@ import 'package:elite_shop/utils/theme.dart';
 import 'package:elite_shop/pages/auth/login_page.dart';
 import 'package:elite_shop/pages/home/home_page.dart';
 import 'package:elite_shop/pages/cart/cart_page.dart';
+import 'package:elite_shop/pages/profile/profile_page.dart';
+
 
 void main() {
   runApp(
@@ -27,6 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'Elite Shop',
       theme: appTheme(),
       debugShowCheckedModeBanner: false,
+
       routes: {
         '/': (context) => const WelcomePage(),
         '/home': (context) => const HomePage(),
